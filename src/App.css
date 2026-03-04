@@ -1,0 +1,734 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-available: #4caf50;
+  --color-selected: #2196f3;
+  --color-reserved: #ff9800;
+  --color-occupied: #f44336;
+  --color-bg: #f5f7fa;
+  --color-surface: #ffffff;
+  --color-text: #333333;
+  --color-text-light: #666666;
+  --color-border: #e0e0e0;
+  --color-primary: #1976d2;
+  --color-primary-dark: #1565c0;
+  --color-error: #d32f2f;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.app-header {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: white;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.app-header h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  opacity: 0.9;
+  font-size: 0.95rem;
+}
+
+/* Main Layout */
+.app-main {
+  flex: 1;
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.left-panel {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 300px;
+}
+
+/* Legend */
+.legend {
+  background: var(--color-surface);
+  padding: 1.25rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.legend h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--color-text);
+}
+
+.legend-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.legend-color {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+/* Seat Map */
+.seat-map-container {
+  background: var(--color-surface);
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+
+/* Airplane Shape & Layout */
+.airplane-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  background: #f0f2f5;
+  border-radius: 40px;
+}
+
+.airplane-body {
+  background: #ffffff;
+  border-radius: 100px 100px 40px 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border: 4px solid #e0e6ed;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.airplane-nose {
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 100px 100px 20px 20px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #dde2e9;
+  position: relative;
+}
+
+.cockpit {
+  width: 60%;
+  height: 40px;
+  background: #2c3e50;
+  border-radius: 40px 40px 10px 10px;
+  margin: 0 auto 0.5rem;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.cabin {
+  display: flex;
+  gap: 1rem;
+}
+
+.side-wall {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0.5rem;
+  background: #edf2f7;
+  border-radius: 10px;
+}
+
+.left-wall {
+  border-radius: 20px 5px 5px 20px;
+}
+
+.right-wall {
+  border-radius: 5px 20px 20px 5px;
+}
+
+.window-frame {
+  width: 30px;
+  height: 58px;
+  /* Matches seat row height roughly */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.window-icon {
+  font-size: 1.2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.seats-area {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.seat-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.25rem 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.tapered-row {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  transform: scale(0.95);
+}
+
+.aisle {
+  width: 30px;
+  height: 48px;
+}
+
+.seat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.seat-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.65rem;
+  line-height: 1;
+}
+
+.seat-class-tag {
+  color: var(--color-text-light);
+  font-weight: 500;
+}
+
+.seat-price-tag {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.window-seat {
+  box-shadow: 0 0 10px rgba(33, 150, 243, 0.1);
+  border-width: 3px;
+}
+
+.airplane-tail {
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(135deg, #e9ecef, #dee2e6);
+  border-radius: 20px 20px 60px 60px;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-top: 2px solid #dde2e9;
+}
+
+.stabilizers {
+  width: 40px;
+  height: 10px;
+  background: #bdc3c7;
+  border-radius: 5px;
+  margin-bottom: 0.5rem;
+}
+
+/* Redesigned Reset Button */
+.btn-reset {
+  background: linear-gradient(135deg, #ff5252, #d32f2f);
+  color: white;
+  margin-top: 2rem;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3);
+  border: none;
+}
+
+.btn-reset:hover {
+  background: linear-gradient(135deg, #ff1744, #b71c1c);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(211, 47, 47, 0.4);
+}
+
+.btn-reset:active {
+  transform: translateY(0);
+}
+
+/* Original Seat Styles Overrides */
+.seat {
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+/* Seat States */
+.seat-available {
+  background: #e8f5e9;
+  border-color: var(--color-available);
+  color: var(--color-available);
+}
+
+.seat-available:hover:not(:disabled) {
+  background: var(--color-available);
+  color: white;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 6px 12px rgba(76, 175, 80, 0.4);
+}
+
+.seat-available:hover:not(:disabled)::before {
+  top: -6px;
+  height: 10px;
+}
+
+.seat-selected {
+  background: var(--color-selected);
+  border-color: var(--color-selected);
+  color: white;
+  animation: seatSelected 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+}
+
+@keyframes seatSelected {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2) rotate(5deg);
+  }
+
+  75% {
+    transform: scale(0.95) rotate(-3deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+.seat-selected:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.seat-reserved {
+  background: #fff3e0;
+  border-color: var(--color-reserved);
+  color: var(--color-reserved);
+}
+
+.seat-reserved:hover {
+  background: var(--color-reserved);
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
+  cursor: pointer;
+}
+
+.seat-reserved::after {
+  content: '🔒';
+  position: absolute;
+  font-size: 0.7rem;
+  top: 2px;
+  right: 2px;
+}
+
+.seat-occupied {
+  background: #ffebee;
+  border-color: var(--color-occupied);
+  color: var(--color-occupied);
+}
+
+.seat-occupied:hover {
+  background: var(--color-occupied);
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(244, 67, 54, 0.3);
+  cursor: pointer;
+}
+
+.seat-occupied::after {
+  content: '❌';
+  position: absolute;
+  font-size: 0.7rem;
+  top: 2px;
+  right: 2px;
+}
+
+.seat-unbooking {
+  animation: seatUnbook 0.4s ease-out;
+}
+
+@keyframes seatUnbook {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(0.8) rotate(-10deg);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+/* Booking Summary */
+.booking-summary {
+  background: var(--color-surface);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.booking-summary h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.summary-content {
+  margin-bottom: 1.5rem;
+}
+
+.summary-content p {
+  margin-bottom: 0.75rem;
+}
+
+.selected-seats-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.selected-seat-tag {
+  background: var(--color-surface);
+  color: var(--color-text);
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  min-width: 60px;
+}
+
+.tag-number {
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: 1rem;
+}
+
+.tag-price {
+  font-weight: 600;
+  color: var(--color-available);
+}
+
+.tag-class {
+  font-size: 0.7rem;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+}
+
+.total-price {
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.summary-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* Buttons */
+.btn {
+  flex: 1;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel {
+  background: #f5f5f5;
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background: #e0e0e0;
+}
+
+.btn-confirm {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-confirm:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-success {
+  background: var(--color-available);
+  color: white;
+}
+
+.btn-error {
+  background: var(--color-error);
+  color: white;
+}
+
+/* Error Message */
+.error-message {
+  background: #ffebee;
+  border: 1px solid var(--color-error);
+  color: var(--color-error);
+  padding: 1rem;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.error-icon {
+  font-size: 1.1rem;
+}
+
+.btn-reset {
+  background: var(--color-error);
+  color: white;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.btn-reset:hover {
+  background: #b71c1c;
+}
+
+/* Instructions */
+.instructions {
+  background: var(--color-surface);
+  padding: 1.25rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+.instructions h4 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+}
+
+.instructions ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.instructions li {
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.instructions li:last-child {
+  border-bottom: none;
+}
+
+.instructions li strong {
+  color: var(--color-text);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: var(--color-surface);
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.modal-content p {
+  color: var(--color-text-light);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+/* Footer */
+.app-footer {
+  background: var(--color-text);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .app-main {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .left-panel {
+    flex: none;
+  }
+
+  .right-panel {
+    flex: none;
+    width: 100%;
+  }
+
+  .seat {
+    width: 40px;
+    height: 40px;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .app-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .legend-items {
+    justify-content: center;
+  }
+
+  .seat {
+    width: 36px;
+    height: 36px;
+  }
+
+  .summary-actions {
+    flex-direction: column;
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+  }
+}
