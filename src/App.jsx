@@ -7,13 +7,12 @@ import './App.css';
 
 const MAX_SELECTIONS = 5;
 
-// Initial seat data - simulating an airplane with 12 rows, 6 seats per row (A-F)
-// Initial seat data - simulating an airplane with 12 rows, 6 seats per row (A-F)
+// Initial seat data - simulating an airplane with 4 rows, 1 seat per row (A)
 function generateInitialSeats() {
   const seats = [];
-  const seatLetters = ['A', 'B', 'C', 'D', 'E', 'F'];
+  const seatLetters = ['A'];
 
-  for (let row = 1; row <= 12; row++) {
+  for (let row = 1; row <= 4; row++) {
     seatLetters.forEach((letter, index) => {
       const seatNumber = `${row}${letter}`;
       let status = 'available';
@@ -30,20 +29,20 @@ function generateInitialSeats() {
       let seatClass = 'Economy';
       let basePrice = 100;
 
-      if (row <= 2) {
+      if (row === 1) {
         seatClass = 'First Class';
         basePrice = 500;
-      } else if (row <= 5) {
+      } else if (row === 2) {
         seatClass = 'Business Class';
         basePrice = 300;
       }
 
-      // Window seats are first and last in the row (A and F)
-      const isWindow = index === 0 || index === seatLetters.length - 1;
+      // Single column - let's treat it as both window and aisle for pricing/styling if needed
+      const isWindow = true; 
       let finalPrice = basePrice;
 
       if (isWindow) {
-        finalPrice = Math.round(basePrice * 1.2); // 20% premium for window seats
+        finalPrice = Math.round(basePrice * 1.2); // 20% premium
       }
 
       seats.push({
@@ -74,20 +73,20 @@ function App() {
 
   // Load seats from localStorage or generate initial seats
   useEffect(() => {
-    const savedSeats = localStorage.getItem('airplaneSeats');
+    const savedSeats = localStorage.getItem('airplaneSeats_v3');
     if (savedSeats) {
       setSeats(JSON.parse(savedSeats));
     } else {
       const initialSeats = generateInitialSeats();
       setSeats(initialSeats);
-      localStorage.setItem('airplaneSeats', JSON.stringify(initialSeats));
+      localStorage.setItem('airplaneSeats_v3', JSON.stringify(initialSeats));
     }
   }, []);
 
   // Save seats to localStorage whenever they change
   useEffect(() => {
     if (seats.length > 0) {
-      localStorage.setItem('airplaneSeats', JSON.stringify(seats));
+      localStorage.setItem('airplaneSeats_v3', JSON.stringify(seats));
     }
   }, [seats]);
 
@@ -98,22 +97,9 @@ function App() {
     setErrorMessage('');
     const seat = seats.find(s => s.id === seatId);
 
-    // Handle unbooking reserved/occupied seats
+    // Strict validation: Cannot select reserved or occupied seats
     if (seat && (seat.status === 'reserved' || seat.status === 'occupied')) {
-      setModal({
-        isOpen: true,
-        title: 'Unbook Seat',
-        message: `Are you sure you want to unbook seat ${seat.number}?`,
-        type: 'confirm',
-        onConfirm: () => {
-          setSeats(prevSeats =>
-            prevSeats.map(s =>
-              s.id === seatId ? { ...s, status: 'available' } : s
-            )
-          );
-          setModal({ ...modal, isOpen: false });
-        },
-      });
+      setErrorMessage(`Seat ${seat.number} is already ${seat.status} and cannot be selected.`);
       return;
     }
 
@@ -148,7 +134,7 @@ function App() {
         setSeats(prevSeats =>
           prevSeats.map(seat => ({ ...seat, status: 'available' }))
         );
-        setModal({ ...modal, isOpen: false });
+        closeModal();
       },
     });
   };
@@ -188,12 +174,12 @@ function App() {
       title: 'Booking Confirmed!',
       message: `Your ${selectedCount} seat(s) have been successfully reserved.`,
       type: 'success',
-      onConfirm: () => setModal({ ...modal, isOpen: false }),
+      onConfirm: () => closeModal(),
     });
   };
 
   const closeModal = () => {
-    setModal({ ...modal, isOpen: false });
+    setModal(prev => ({ ...prev, isOpen: false }));
   };
 
   return (
@@ -237,14 +223,14 @@ function App() {
             <ul>
               <li>Click on <strong>Available</strong> seats to select them</li>
               <li>Click on <strong>Selected</strong> seats to deselect</li>
-              <li>Click on <strong>Reserved/Occupied</strong> seats to unbook them</li>
               <li>Maximum {MAX_SELECTIONS} seats per booking</li>
             </ul>
           </div>
-
+          <div>
           <button className="btn btn-reset" onClick={handleResetAll}>
             Reset All Bookings
           </button>
+          </div>
         </div>
       </main>
 

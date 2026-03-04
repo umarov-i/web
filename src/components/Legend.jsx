@@ -13,11 +13,11 @@ function Legend() {
         </div>
         <div className="legend-item">
           <div className="legend-color seat-reserved"></div>
-          <span>Reserved (click to unbook)</span>
+          <span>Reserved</span>
         </div>
         <div className="legend-item">
           <div className="legend-color seat-occupied"></div>
-          <span>Occupied (click to unbook)</span>
+          <span>Occupied</span>
         </div>
         <div className="legend-item">
           <span className="window-icon">🪟</span>

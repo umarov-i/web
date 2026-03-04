@@ -1,12 +1,9 @@
-function Seat({ seat, onSelect, onDeselect, maxSelections, selectedCount }) {
-  const isDisabled = seat.status === 'occupied' || seat.status === 'reserved';
+function Seat({ seat, onSelect, onDeselect, maxSelections, selectedCount, getSeatClass }) {
   const isSelected = seat.status === 'selected';
+  const isReservedOrOccupied = seat.status === 'reserved' || seat.status === 'occupied';
   const isAtMaxCapacity = selectedCount >= maxSelections && !isSelected;
 
   const handleClick = () => {
-    if (isDisabled) return;
-    if (isAtMaxCapacity) return;
-
     if (isSelected) {
       onDeselect(seat.id);
     } else {
@@ -14,34 +11,26 @@ function Seat({ seat, onSelect, onDeselect, maxSelections, selectedCount }) {
     }
   };
 
-  const getSeatClass = () => {
-    const baseClass = 'seat';
-    switch (seat.status) {
-      case 'available':
-        return `${baseClass} seat-available`;
-      case 'selected':
-        return `${baseClass} seat-selected`;
-      case 'reserved':
-        return `${baseClass} seat-reserved`;
-      case 'occupied':
-        return `${baseClass} seat-occupied`;
-      default:
-        return baseClass;
-    }
-  };
-
   return (
-    <div className="seat-container">
+    <div key={seat.id} className="seat-container">
       <button
-        className={getSeatClass()}
+        type="button"
+        className={`${getSeatClass(seat)} ${seat.isWindow ? 'window-seat' : ''}`}
         onClick={handleClick}
-        disabled={isDisabled || isAtMaxCapacity}
-        aria-label={`Seat ${seat.number}, ${seat.status}`}
-        title={`Seat ${seat.number} - ${seat.status}`}
+        disabled={isAtMaxCapacity && seat.status === 'available'}
+        style={{
+          cursor: isAtMaxCapacity && seat.status === 'available' ? 'not-allowed' : 'pointer',
+          opacity: isAtMaxCapacity && seat.status === 'available' ? 0.6 : 1,
+        }}
+        title={`Seat ${seat.number} - ${seat.class}\nPrice: $${seat.price}\n${seat.isWindow ? 'Window Seat' : ''}`}
+        aria-label={`Seat ${seat.number}, ${seat.class}, $${seat.price}, ${seat.status}`}
       >
         <span className="seat-number">{seat.number}</span>
       </button>
-      <span className="seat-label">{seat.number}</span>
+      <div className="seat-info">
+        <span className="seat-class-tag">{seat.class.split(' ')[0]}</span>
+        <span className="seat-price-tag">${seat.price}</span>
+      </div>
     </div>
   );
 }
