@@ -7,10 +7,10 @@ import './App.css';
 
 const MAX_SELECTIONS = 5;
 
-// Initial seat data - simulating an airplane with 4 rows, 1 seat per row (A)
+// Initial seat data - simulating an airplane with 4 rows, 4 seats per row (A-D)
 function generateInitialSeats() {
   const seats = [];
-  const seatLetters = ['A'];
+  const seatLetters = ['A', 'B', 'C', 'D'];
 
   for (let row = 1; row <= 4; row++) {
     seatLetters.forEach((letter, index) => {
@@ -37,8 +37,8 @@ function generateInitialSeats() {
         basePrice = 300;
       }
 
-      // Single column - let's treat it as both window and aisle for pricing/styling if needed
-      const isWindow = true; 
+      // Window seats are A and D
+      const isWindow = index === 0 || index === seatLetters.length - 1;
       let finalPrice = basePrice;
 
       if (isWindow) {
@@ -73,20 +73,20 @@ function App() {
 
   // Load seats from localStorage or generate initial seats
   useEffect(() => {
-    const savedSeats = localStorage.getItem('airplaneSeats_v3');
+    const savedSeats = localStorage.getItem('airplaneSeats_v4');
     if (savedSeats) {
       setSeats(JSON.parse(savedSeats));
     } else {
       const initialSeats = generateInitialSeats();
       setSeats(initialSeats);
-      localStorage.setItem('airplaneSeats_v3', JSON.stringify(initialSeats));
+      localStorage.setItem('airplaneSeats_v4', JSON.stringify(initialSeats));
     }
   }, []);
 
   // Save seats to localStorage whenever they change
   useEffect(() => {
     if (seats.length > 0) {
-      localStorage.setItem('airplaneSeats_v3', JSON.stringify(seats));
+      localStorage.setItem('airplaneSeats_v4', JSON.stringify(seats));
     }
   }, [seats]);
 
